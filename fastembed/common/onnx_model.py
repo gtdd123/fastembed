@@ -1,20 +1,20 @@
-import os
 import json
+import os
 import warnings
+from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
 from functools import cached_property
 from pathlib import Path
-from typing import Any, Generic, Iterable, Sequence, Type, TypeVar
+from typing import Any, Generic, TypeVar
 
 import numpy as np
 import onnxruntime as ort
-
 from loguru import logger
 from numpy.typing import NDArray
 from tokenizers import Tokenizer
 
 from fastembed.common.onnx_external_data import ONNX_SNAPSHOTS_DIR, link_external_data
-from fastembed.common.types import OnnxProvider, NumpyArray, Device
+from fastembed.common.types import Device, NumpyArray, OnnxProvider
 from fastembed.common.utils import MAX_BATCH_TOKENS
 from fastembed.parallel_processor import Worker
 
@@ -44,7 +44,7 @@ class OnnxModel(Generic[T]):
     _max_batch_tokens: int | None = None
 
     @classmethod
-    def _get_worker_class(cls) -> Type["EmbeddingWorker[T]"]:
+    def _get_worker_class(cls) -> type["EmbeddingWorker[T]"]:
         raise NotImplementedError("Subclasses must implement this method")
 
     def _get_worker_init_kwargs(self) -> dict[str, Any]:
